@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+h1 {
+background: linear-gradient(to top, #0f3d5e 2%, #2a8bcf 100%);
+font-style:bold;
+font-size:3em;
+text-align: center;
+z-index:1;
+font-weight:bold;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+-webkit-text-stroke-width: 1px;
+-webkit-text-stroke-color: #549db4;
+}
+body {
+    background-image: url('https://i.postimg.cc/RVHVQRbH/dff22fac62d29d541f40e404e1eaeced.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+
+}
+button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #549db4; /* Black text */
+            background-color: #fff; /* White background */
+            border: 2px solid #3d8297; /* Black border */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: #ddd; /* Light gray on hover */
+        }
+        button:active {
+            transform: scale(0.98); /* Slightly shrink on click */
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        #movie-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>find something to watch! </h1>
+        <div id="movie-container"></div>
+        <br>
+        <br>
+        <button id="generateButton">generate ☆</button>
+    </div>
+    <script>
+        // Array of movies with names and poster URLs
+        const movies = [
+            {
+                name: "inception",
+                poster: "https://i.postimg.cc/FzjPxwtR/61xzvf-Ji-Nk-L.jpg"
+            },
+            {
+                name: "the matrix",
+                poster: "https://i.postimg.cc/BQ07vZD1/s-l1200.jpg"
+            },
+            {
+                name: "interstellar",
+                poster: "https://i.postimg.cc/fRWHxH8z/716-P1x-Cmn-PL.jpg"
+            },
+            {
+                name: "the dark knight",
+                poster: "https://i.postimg.cc/sxSLNvW3/A1ex-Rxg-HRRL.jpg"
+            },
+            {
+                name: "beetlejuice beetlejuice",
+                poster: "https://i.postimg.cc/Y9F8pTC3/s-l1200.jpg"
+            },
+            {
+                name: "deadpool and wolverine",
+                poster: "https://i.postimg.cc/Y0wRj84w/s-l1200.jpg"
+            },
+            {
+                name: "back to black",
+                poster: "https://i.postimg.cc/NG1bZhVG/s-l1200.jpg"
+            },
+            {
+                name: "the shawshank redemption",
+                poster: "https://i.postimg.cc/Px1zGZSV/51-EZXDOXBf-L.jpg"
+            },
+            {
+                name: "the godfather",
+                poster: "https://i.postimg.cc/gjdyGJ5z/81-B3-U3-Rv-h-L-AC-UF1000-1000-QL80.jpg"
+            },
+            {
+                name: "schindler's list",
+                poster: "https://i.postimg.cc/cCmRCWyQ/schindlers-list-WC24705-B-994733-1024x1024-2x.jpg"
+            },
+            {
+                name: "pulp fiction",
+                poster: "https://i.postimg.cc/K84PGC9M/1288.jpg"
+            },
+            {
+                name: "the lord of the rings: the return of the king",
+                poster: "https://i.postimg.cc/dtVd6zcx/MV5-BMTZk-Mj-Bj-NWMt-ZGI5-OC00-MGU0-LTk4-ZTIt-ODg2-NWM3-NTVm-NWQ4-Xk-Ey-Xk-Fqc-Gc-V1.jpg"
+            },
+            {       
+                name: "forrest gump",
+                poster: "https://i.postimg.cc/8zFvQM5d/MV5-BNDYw-Nz-Vj-MTIt-Zm-U5-YS00-Yj-Q5-LTlj-Yjgt-Mj-Y2-NDVm-YWMy-NWFm-Xk-Ey-Xk-Fqc-Gc-V1.jpg"
+            },
+            {
+                name: "fight club",
+                poster: "https://i.postimg.cc/pTv5FSBk/il-570x-N-2412674268-1sgm.jpg"
+            }
+
+        ];
+        
+        // Function to generate a random movie
+        function displayRandomMovie() {
+            // Select a random movie
+            const randomMovie = movies[Math.floor(Math.random() * movies.length)];
+        
+            // Get the container element
+            const container = document.getElementById('movie-container');
+        
+            // Clear previous content
+            container.innerHTML = '';
+        
+            // Create and append the movie name
+            const movieName = document.createElement('h2');
+            movieName.textContent = randomMovie.name;
+            movieName.style.color = 'white'; // Set the color to white
+            container.appendChild(movieName);
+        
+            // Create and append the movie poster
+            const moviePoster = document.createElement('img');
+            moviePoster.src = randomMovie.poster;
+            moviePoster.alt = `${randomMovie.name} Poster`;
+            moviePoster.style.border = '5px solid white';
+            moviePoster.style.borderRadius = '10px';
+            moviePoster.style.maxHeight = '200px'; // Set the maximum height to 200px
+            container.appendChild(moviePoster);
+        }
+        
+        // Attach the function to the button
+        const button = document.getElementById('generateButton');
+        button.addEventListener('click', displayRandomMovie);
+    </script>
+</body>
+</html>
