@@ -5,16 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+@font-face {
+    font-family: 'nintendo';
+    src: url(https://dl.dropbox.com/s/vlxjtnvrl9s0snp/Nintendo-DS-BIOS.ttf);
+}
+@font-face {
+    font-family: "aphotheotica";
+    src: url('https://dl.dropboxusercontent.com/s/g7bic3odyn7ctxd/Aphotheotica.ttf?dl=0'); 
+    format("truetype");
+}
 h1 {
 background: linear-gradient(to top, #0f3d5e 2%, #2a8bcf 100%);
 font-style:bold;
-font-size:3em;
+font-size:2.625em; /* Increase font size by 0.25x */
 text-align: center;
 z-index:1;
 font-weight:bold;
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
--webkit-text-stroke-width: 1px;
+-webkit-text-stroke-width: 0.875px; /* Increase stroke width by 0.25x */
 -webkit-text-stroke-color: #549db4;
 }
 body {
@@ -22,21 +31,20 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100vh;
+    height: 100vh; /* Ensure the background covers the entire page */
+    width: 100vw; /* Ensure the background covers the entire page */
     align-items: center;
     display: flex;
     justify-content: center;
-
-
 }
 button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 8.75px 17.5px; /* Increase padding by 0.25x */
+            font-size: 14px; /* Increase font size by 0.25x */
             font-weight: bold;
             color: #549db4; /* Black text */
             background-color: #fff; /* White background */
-            border: 2px solid #3d8297; /* Black border */
-            border-radius: 5px;
+            border: 1.75px solid #3d8297; /* Increase border width by 0.25x */
+            border-radius: 4.375px; /* Increase border radius by 0.25x */
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
@@ -51,7 +59,7 @@ button {
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100%;
+            height: 87.5%; /* Increase height by 0.25x */
         }
         #movie-container {
             display: flex;
@@ -67,75 +75,188 @@ button {
         <h1>find something to watch! </h1>
         <div id="movie-container"></div>
         <br>
-        <br>
-        <button id="generateButton">generate ☆</button>
+        <button id="generateButton" style="font-size: 14px; padding: 8.75px 17.5px;">generate ☆</button> <!-- Increase font size and padding by 0.25x -->
+        <p id="counter" style="color: white; font-size: 0.7875em; margin-top: 8.75px; display: none;"><b>movies generated: 0</b></p> <!-- Hide counter initially -->
+
     </div>
     <script>
-        // Array of movies with names and poster URLs
+        // Array of movies with names, poster URLs, tags, and ratings
         const movies = [
             {
                 name: "inception",
-                poster: "https://i.postimg.cc/FzjPxwtR/61xzvf-Ji-Nk-L.jpg"
+                poster: "https://i.postimg.cc/FzjPxwtR/61xzvf-Ji-Nk-L.jpg",
+                tags: ["sci-fi", "thriller"], // Make tags lowercase
+                rating: "8.8"
             },
             {
                 name: "the matrix",
-                poster: "https://i.postimg.cc/BQ07vZD1/s-l1200.jpg"
+                poster: "https://i.postimg.cc/BQ07vZD1/s-l1200.jpg",
+                tags: ["action", "sci-fi"], // Make tags lowercase
+                rating: "8.7"
             },
             {
                 name: "interstellar",
-                poster: "https://i.postimg.cc/fRWHxH8z/716-P1x-Cmn-PL.jpg"
+                poster: "https://i.postimg.cc/fRWHxH8z/716-P1x-Cmn-PL.jpg",
+                tags: ["adventure", "drama"], // Make tags lowercase
+                rating: "8.6"
             },
             {
                 name: "the dark knight",
-                poster: "https://i.postimg.cc/sxSLNvW3/A1ex-Rxg-HRRL.jpg"
+                poster: "https://i.postimg.cc/sxSLNvW3/A1ex-Rxg-HRRL.jpg",
+                tags: ["action", "crime"], // Make tags lowercase
+                rating: "9.0"
             },
             {
                 name: "beetlejuice beetlejuice",
-                poster: "https://i.postimg.cc/Y9F8pTC3/s-l1200.jpg"
+                poster: "https://i.postimg.cc/Y9F8pTC3/s-l1200.jpg",
+                tags: ["comedy", "fantasy"], // Make tags lowercase
+                rating: "7.5"
             },
             {
                 name: "deadpool and wolverine",
-                poster: "https://i.postimg.cc/Y0wRj84w/s-l1200.jpg"
+                poster: "https://i.postimg.cc/Y0wRj84w/s-l1200.jpg",
+                tags: ["action", "comedy"], // Make tags lowercase
+                rating: "8.0"
             },
             {
                 name: "back to black",
-                poster: "https://i.postimg.cc/NG1bZhVG/s-l1200.jpg"
+                poster: "https://i.postimg.cc/NG1bZhVG/s-l1200.jpg",
+                tags: ["documentary", "music"], // Make tags lowercase
+                rating: "7.8"
             },
             {
                 name: "the shawshank redemption",
-                poster: "https://i.postimg.cc/Px1zGZSV/51-EZXDOXBf-L.jpg"
+                poster: "https://i.postimg.cc/Px1zGZSV/51-EZXDOXBf-L.jpg",
+                tags: ["drama"], // Make tags lowercase
+                rating: "9.3"
             },
             {
                 name: "the godfather",
-                poster: "https://i.postimg.cc/gjdyGJ5z/81-B3-U3-Rv-h-L-AC-UF1000-1000-QL80.jpg"
+                poster: "https://i.postimg.cc/gjdyGJ5z/81-B3-U3-Rv-h-L-AC-UF1000-1000-QL80.jpg",
+                tags: ["crime", "drama"], // Make tags lowercase
+                rating: "9.2"
             },
             {
                 name: "schindler's list",
-                poster: "https://i.postimg.cc/cCmRCWyQ/schindlers-list-WC24705-B-994733-1024x1024-2x.jpg"
+                poster: "https://i.postimg.cc/cCmRCWyQ/schindlers-list-WC24705-B-994733-1024x1024-2x.jpg",
+                tags: ["biography", "drama"], // Make tags lowercase
+                rating: "8.9"
             },
             {
                 name: "pulp fiction",
-                poster: "https://i.postimg.cc/K84PGC9M/1288.jpg"
+                poster: "https://i.postimg.cc/K84PGC9M/1288.jpg",
+                tags: ["crime", "drama"], // Make tags lowercase
+                rating: "8.9"
             },
             {
                 name: "the lord of the rings: the return of the king",
-                poster: "https://i.postimg.cc/dtVd6zcx/MV5-BMTZk-Mj-Bj-NWMt-ZGI5-OC00-MGU0-LTk4-ZTIt-ODg2-NWM3-NTVm-NWQ4-Xk-Ey-Xk-Fqc-Gc-V1.jpg"
+                poster: "https://i.postimg.cc/dtVd6zcx/MV5-BMTZk-Mj-Bj-NWMt-ZGI5-OC00-MGU0-LTk4-ZTIt-ODg2-NWM3-NTVm-NWQ4-Xk-Ey-Xk-Fqc-Gc-V1.jpg",
+                tags: ["adventure", "drama"], // Make tags lowercase
+                rating: "8.9"
             },
             {       
                 name: "forrest gump",
-                poster: "https://i.postimg.cc/8zFvQM5d/MV5-BNDYw-Nz-Vj-MTIt-Zm-U5-YS00-Yj-Q5-LTlj-Yjgt-Mj-Y2-NDVm-YWMy-NWFm-Xk-Ey-Xk-Fqc-Gc-V1.jpg"
+                poster: "https://i.postimg.cc/8zFvQM5d/MV5-BNDYw-Nz-Vj-MTIt-Zm-U5-YS00-Yj-Q5-LTlj-Yjgt-Mj-Y2-NDVm-YWMy-NWFm-Xk-Ey-Xk-Fqc-Gc-V1.jpg",
+                tags: ["drama", "romance"], // Make tags lowercase
+                rating: "8.8"
             },
             {
                 name: "fight club",
-                poster: "https://i.postimg.cc/pTv5FSBk/il-570x-N-2412674268-1sgm.jpg"
-            }
+                poster: "https://i.postimg.cc/pTv5FSBk/il-570x-N-2412674268-1sgm.jpg",
+                tags: ["drama"], // Make tags lowercase
+                rating: "8.8"
+            },
+            {
+                name: "black adam",
+                poster: "https://m.media-amazon.com/images/M/MV5BYmM3OTM4NDktMmI2NS00OWU0LTg4OTQtNjZhMmFkYjhmOGY1XkEyXkFqcGc@._V1_.jpg",
+                tags: ["action", "adventure"], // Make tags lowercase
+                rating: "6.8"
+            },
+            {
+                name: "wicked",
+                poster: "https://m.media-amazon.com/images/M/MV5BOWMwYjYzYmMtMWQ2Ni00NWUwLTg2MzAtYzkzMDBiZDIwOTMwXkEyXkFqcGc@._V1_.jpg",
+                tags: ["drama", "fantasy"], // Make tags lowercase
+                rating: "7.5"
+            },
+            {
+                name: "gladiator II",
+                poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgLki4wkxR7NSk15Z8syUP7_ID-onIveCFHA&s",
+                tags: ["action", "adventure"], // Make tags lowercase
+                rating: "7.0"
+            },
+            {
+                name: "crazy rich asians",
+                poster: "https://m.media-amazon.com/images/M/MV5BMTYxNDMyOTAxN15BMl5BanBnXkFtZTgwMDg1ODYzNTM@._V1_FMjpg_UX1000_.jpg",
+                tags: ["comedy", "drama"], // Make tags lowercase
+                rating: "7.0"
+            },
+            {
+                name: "the hate u give",
+                poster: "https://upload.wikimedia.org/wikipedia/en/b/bc/The_Hate_U_Give_poster.png",
+                tags: ["crime", "drama"], // Make tags lowercase
+                rating: "7.5"
+            },
+            {
+                name: "spirited away",
+                poster: "https://m.media-amazon.com/images/M/MV5BNTEyNmEwOWUtYzkyOC00ZTQ4LTllZmUtMjk0Y2YwOGUzYjRiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+                tags: ["animation", "adventure"], // Make tags lowercase
+                rating: "8.6"
+            },
+            {
+                name: "when marnie was there",
+                poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg7dDdq5910sj3Yv7FR02ksG7iRXbhGhDDaQ&s",
+                tags: ["animation", "drama"], // Make tags lowercase
+                rating: "7.7"
+            },
+            {
+                name: "the snowman",
+                poster: "https://pastposters.com/cdn/shop/files/snowman-cinema-one-sheet-movie-poster-_1.jpg?v=1730405801",
+                tags: ["crime", "drama"], // Make tags lowercase
+                rating: "5.1"
+            },
+
+            {
+                name: "self reliance",
+                poster: "https://resizing.flixster.com/5WJkKQAAWK30qvvMpHYfcAZ6yM4=/fit-in/180x240/v2/https://resizing.flixster.com/zSv3QTYScdat6tfcTtsAw1NpTVA=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2NiMzVlNmY5LTA4OTktNDY2MC05MTU0LTk0NzVmNGU4OTk1Ny5qcGc=",
+                tags: ["comedy", "thriller"], // Make tags lowercase
+                rating: "7.3"
+            },
+
 
         ];
         
+        // Array to keep track of watched movies
+        let watchedMovies = [];
+        // Array to keep track of tags to avoid
+        let avoidedTags = [];
+
+        // Counter for the number of movies generated
+        let movieCounter = 0;
+
         // Function to generate a random movie
         function displayRandomMovie() {
+            // Increment the counter
+            movieCounter++;
+            const counterElement = document.getElementById('counter');
+            counterElement.textContent = `movies generated: ${movieCounter}`;
+            counterElement.style.display = 'block'; // Show counter after first click
+
+            // Filter out watched movies and avoided tags
+            const unwatchedMovies = movies.filter(movie => 
+                !watchedMovies.includes(movie.name) && 
+                !movie.tags.some(tag => avoidedTags.includes(tag))
+            );
+
+            // If all movies are watched or avoided, reset the arrays
+            if (unwatchedMovies.length === 0) {
+                watchedMovies = [];
+                avoidedTags = [];
+                alert("You've watched all the movies or avoided all tags! Resetting the list.");
+                return;
+            }
+
             // Select a random movie
-            const randomMovie = movies[Math.floor(Math.random() * movies.length)];
+            const randomMovie = unwatchedMovies[Math.floor(Math.random() * unwatchedMovies.length)];
         
             // Get the container element
             const container = document.getElementById('movie-container');
@@ -147,6 +268,10 @@ button {
             const movieName = document.createElement('h2');
             movieName.textContent = randomMovie.name;
             movieName.style.color = 'white'; // Set the color to white
+            movieName.style.fontFamily = 'nintendo'; // Change the font to Nintendo Bold
+            movieName.style.fontWeight = 'bold'; // Make the font bold
+            movieName.style.fontSize = '1.75em'; // Increase font size by 0.25x
+            movieName.style.textShadow = '1.75px 1.75px 0 #3d8297, -1.75px -1.75px 0 #3d8297, 1.75px -1.75px 0 #3d8297, -1.75px 1.75px 0 #3d8297'; // Increase shadow size by 0.25x
             container.appendChild(movieName);
         
             // Create and append the movie poster
@@ -155,8 +280,83 @@ button {
             moviePoster.alt = `${randomMovie.name} Poster`;
             moviePoster.style.border = '5px solid white';
             moviePoster.style.borderRadius = '10px';
-            moviePoster.style.maxHeight = '200px'; // Set the maximum height to 200px
+            moviePoster.style.height = '350px'; // Increase height by 0.25x
             container.appendChild(moviePoster);
+
+            // Create and append the movie tags
+            const movieTags = document.createElement('p');
+            movieTags.textContent = `tags : ${randomMovie.tags.join(', ')}`;
+            movieTags.style.color = 'white'; // Set the color to white
+            movieTags.style.marginTop = '8.75px'; // Increase margin by 0.25x
+            movieTags.style.marginBottom = '0.875px'; // Increase margin by 0.25x
+            movieTags.style.fontFamily = 'aphotheotica'; // Change the font to MS Gothic
+            movieTags.style.fontSize = '0.875em'; // Increase font size by 0.25x
+            movieTags.style.fontWeight = 'bold'; // Make the tags bold
+            container.appendChild(movieTags);
+
+            // Function to convert rating to stars out of 5
+            function convertRatingToStars(rating) {
+                const maxStars = 5;
+                const fullStars = Math.floor(rating / 2);
+                const halfStar = (rating % 2) >= 1 ? 1 : 0;
+                const emptyStars = maxStars - fullStars - halfStar;
+                return '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(emptyStars);
+            }
+
+            // Create and append the movie rating
+            const movieRating = document.createElement('p');
+            movieRating.textContent = convertRatingToStars(randomMovie.rating);
+            movieRating.style.color = 'white'; // Set the color to white
+            movieRating.style.marginTop = '0'; // Remove the top margin
+            movieRating.style.width = 'calc(100% - 14px)'; // Make the stars the same width as the buttons
+            movieRating.style.textAlign = 'center'; // Center the text
+            movieRating.style.fontSize = '1.3125em'; // Increase font size by 0.25x
+            movieRating.style.marginBottom = '8.75px'; // Increase margin by 0.25x
+            container.appendChild(movieRating);
+
+            // Create and append the avoid tag buttons
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.display = 'flex';
+            buttonContainer.style.flexDirection = 'column'; // Arrange buttons underneath each other
+            buttonContainer.style.alignItems = 'center';
+            container.appendChild(buttonContainer);
+
+            randomMovie.tags.forEach(tag => {
+                const avoidTagButton = document.createElement('button');
+                avoidTagButton.innerHTML = `don't recommend<br>${tag}`;
+                avoidTagButton.style.margin = '3.0625px'; // Increase margin by 0.25x
+                avoidTagButton.style.padding = '3.0625px 6.125px'; // Increase padding by 0.25x
+                avoidTagButton.style.fontFamily = 'Arial'; // Use Arial font
+                avoidTagButton.style.fontSize = '0.6125em'; // Increase font size by 0.25x
+                avoidTagButton.style.textAlign = 'center'; // Center the text
+                avoidTagButton.style.width = 'calc(100% - 14px)'; // Make the button the same width as the stars
+                avoidTagButton.style.marginTop = '8.75px'; // Increase margin by 0.25x
+                buttonContainer.appendChild(avoidTagButton);
+
+                avoidTagButton.addEventListener('click', function() {
+                    if (!avoidedTags.includes(tag)) {
+                        avoidedTags.push(tag);
+                    }
+                    displayRandomMovie(); // Generate a new film when pressed
+                });
+            });
+
+            // Create and append the watched button
+            const watchedButton = document.createElement('button');
+            watchedButton.innerHTML = 'watched this <span style="margin-left: 5px;">✔</span>'; // Add a tick on the opposite side without a box
+            watchedButton.style.margin = '3.0625px'; // Increase margin by 0.25x
+            watchedButton.style.padding = '3.0625px 6.125px'; // Increase padding by 0.25x
+            watchedButton.style.fontFamily = 'Arial'; // Use Arial font
+            watchedButton.style.fontSize = '0.6125em'; // Increase font size by 0.25x
+            watchedButton.style.width = 'calc(100% - 14px)'; // Make the button the same width as the stars
+            buttonContainer.appendChild(watchedButton);
+
+            watchedButton.addEventListener('click', function() {
+                if (!watchedMovies.includes(randomMovie.name)) {
+                    watchedMovies.push(randomMovie.name);
+                }
+                displayRandomMovie(); // Generate a new film when pressed
+            });
         }
         
         // Attach the function to the button
